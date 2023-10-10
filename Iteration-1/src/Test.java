@@ -1,0 +1,30 @@
+import java.util.*;
+
+public class Test {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Map<String, Command> commands = new HashMap<>();
+        commands.put("quit", new Quit());
+        commands.put("register", new Register());
+        commands.put("login", new Login());
+        commands.put("logout", new Logout());
+        commands.put("printInfo", new PrintInfo());
+        while(true) {
+            String input = scanner.nextLine().trim(); // 去除输入前后的空格
+            String[] parts = input.split("\\s+"); // 使用空格分割命令
+            if (parts.length == 0) {
+                System.out.println("Command '' not found");
+            }
+            String commandName = parts[0];
+            Command command = commands.get(commandName);
+            if(command == null) {
+                System.out.println("Command '" + commandName + "' not found");
+            } else {
+                String[] arguments = new String[parts.length - 1];
+                System.arraycopy(parts, 1, arguments, 0, arguments.length);
+                command.execute(arguments);
+            }
+        }
+    }
+}
+
